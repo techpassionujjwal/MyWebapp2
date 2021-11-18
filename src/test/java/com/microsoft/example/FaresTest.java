@@ -115,7 +115,7 @@ public class FaresTest {
     
     
         int totalFees = fred.getTotalFare(fredFares,0); 
-        assertEquals(250 * 5, totalFees); 
+        assertEquals(250 * 10, totalFees); 
         
         //float totalFeesInDollars = fred.getTotalFareInDollars(fredFares);
         //assertEquals(2.50f * 5, totalFeesInDollars, 0.1f);   
