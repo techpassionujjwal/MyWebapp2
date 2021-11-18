@@ -6,7 +6,7 @@ import org.junit.Test;
 public class SimpleTest {
   @Test
   public void evaluatesExpression() {
-    int sum = 1 + 2 + 3;
+    int sum = 1 + 2 + 2 + 1;
     assertEquals(6, sum);
   }
 }
