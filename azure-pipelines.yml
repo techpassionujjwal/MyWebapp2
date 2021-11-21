@@ -1,11 +1,13 @@
+# Maven
+# Build your Java project and run tests with Apache Maven.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+
 trigger:
-- main
+- master
 
 pool:
-  vmImage: 'windows-latest'
-
-variables:
-  buildFolder: 'build'
+  vmImage: windows-latest
 
 steps:
 - task: Maven@3
@@ -20,19 +22,9 @@ steps:
     goals: 'package'
 - task: CopyFiles@2
   inputs:
-    contents: 'build/**'
-    targetFolder: '$(Build.ArtifactStagingDirectory)'
-    cleanTargetFolder: true
+    targetFolder: '$(Build.ArtifactStagingDirectory)'    
 
-- task: ArchiveFiles@2
+- task: PublishBuildArtifacts@1    
+  displayName: 'Publish Artifact: drop'
   inputs:
-    rootFolderOrFile: $(Build.ArtifactStagingDirectory)
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    includeRootFolder: false
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    artifactName: 'drop'
-    publishLocation: 'Container'
+    PathtoPublish: '$(build.artifactstagingdirectory)'
