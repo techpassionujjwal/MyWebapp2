@@ -1,4 +1,12 @@
-# Maven
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildFolder: 'build'
+
 steps:
 - task: Maven@3
   inputs:
@@ -12,9 +20,19 @@ steps:
     goals: 'package'
 - task: CopyFiles@2
   inputs:
-    targetFolder: '$(Build.ArtifactStagingDirectory)'    
+    contents: 'build/**'
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+    cleanTargetFolder: true
 
-- task: PublishBuildArtifacts@1    
-  displayName: 'Publish Artifact: drop'
+- task: ArchiveFiles@2
   inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)'
+    rootFolderOrFile: $(Build.ArtifactStagingDirectory)
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    includeRootFolder: false
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    artifactName: 'drop'
+    publishLocation: 'Container'
